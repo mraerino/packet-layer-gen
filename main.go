@@ -42,6 +42,8 @@ var (
 )
 
 func main() {
+	flag.Parse()
+
 	file, err := ioutil.ReadFile(*defFilePath)
 	if err != nil {
 		log.Errorf("Unable to read file: %v", err)

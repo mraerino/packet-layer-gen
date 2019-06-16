@@ -1,0 +1,142 @@
+package: "packet"
+
+packets:
+  - name: "LSAHeader"
+    fields:
+      - name: "Age"
+        type: "uint16"
+      - name: "Type"
+        type: "LSType"
+      - name: "ID"
+        type: "ID"
+      - name: "AdvertisingRouter"
+        type: "ID"
+      - name: "SequenceNumber"
+        type: "uint32"
+      - name: "Checksum"
+        type: "uint16"
+      - name: "Length"
+        type: "uint16"
+
+  - name: "LSA"
+    fields:
+      - name: "Header"
+        type: "LSAHeader"
+      - name: "Body"
+        type: "Serializable"
+
+  - name: "RouterLSA"
+    fields:
+      - name: "Flags"
+        type: "uint8"
+      - name: "Options"
+        type: "RouterOptions"
+      # multiple of the following:
+      - name: "Type"
+        type: "uint8"
+      - name: "Metric"
+        type: "InterfaceMetric" # len: 24 bit
+      - name: "InterfaceID"
+        type: "ID"
+      - name: "NeighborInterfaceID"
+        type: "ID"
+      - name: "NeighborRouterID"
+        type: "ID"
+
+  - name: "NetworkLSA"
+    fields:
+      - name: "Reserved0"
+        type: "uint8"
+      - name: "Options"
+        type: "RouterOptions"
+      - name: "AttachedRouter"
+        type: "ID"
+        multiple: true
+
+  - name: "InterAreaPrefixLSA"
+    fields:
+      - name: "Reserved0"
+        type: "uint8"
+      - name: "Metric"
+        type: "InterfaceMetric" # len: 24 bit
+      - name: "PrefixLength"
+        type: "uint8"
+      - name: "PrefixOptions"
+        type: "PrefixOptions"
+      - name: "Reserved1"
+        type: "uint16"
+      - name: "AddressPrefix"
+        type: "Prefix"
+
+  - name: "InterAreaRouterLSA"
+    fields:
+      - name: "Reserved0"
+        type: "uint8"
+      - name: "Options"
+        type: "RouterOptions"
+      - name: "Reserved1"
+        type: "uint8"
+      - name: "Metric"
+        type: "InterfaceMetric" # len: 24 bit
+      - name: "DestinationRouterID"
+        type: "ID"
+
+  - name: "ASExternalLSA"
+    fields:
+      - name: "Flags"
+        type: "uint8"
+      - name: "Metric"
+        type: "InterfaceMetric" # len: 24 bit
+      - name: "PrefixLength"
+        type: "uint8"
+      - name: "PrefixOptions"
+        type: "PrefixOptions"
+      - name: "ReferencedLSType"
+        type: "LSType"
+      - name: "AddressPrefix"
+        type: "Prefix"
+      - name: "ForwardingAddress" # Optional, depends on bit F
+        type: "IPv6Address"
+      - name: "ExternalRouteTag" # Optional, depends on bit T
+        type: "uint32"
+      - name: "ReferencedLinkStateID" # Only if ReferenceLSType is non-zero
+        type: "ID"
+
+  - name: "LinkLSA"
+    fields:
+      - name: "RouterPriority"
+        type: "uint8"
+      - name: "Options"
+        type: "RouterOptions"
+      - name: "LinkLocalInterfaceAddress"
+        type: "IPv6Address"
+      - name: "PrefixNum"
+        type: "uint32"
+      - name: "Prefixes"
+        type: "LinkLSAPrefix"
+        multiple: true
+
+  - name: "LSAPrefix"
+    fields:
+      - name: "PrefixLength"
+        type: "uint8"
+      - name: "PrefixOptions"
+        type: "PrefixOptions"
+      - name: "Metric"
+        type: "uint16"
+      - name: "AddressPrefix"
+        type: "Prefix"
+
+  - name: "IntraAreaPrefixLSA"
+    fields:
+      - name: "PrefixNum"
+        type: "uint16"
+      - name: "ReferencedLSType"
+        type: "LSType"
+      - name: "ReferencedLinkStateID"
+        type: "ID"
+      - name: "ReferencedAdvertisingRouter"
+        type: "ID"
+      - name: "Prefixes"
+        type: "LinkLSAPrefix"
+        multiple: true

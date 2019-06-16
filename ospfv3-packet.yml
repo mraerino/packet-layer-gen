@@ -1,0 +1,83 @@
+package: "packet"
+
+packets:
+  - name: "OSPFv3Message"
+    fields:
+      - name: "Version"
+        type: "uint8"
+      - name: "Type"
+        type: "uint8"
+      - name: "PacketLength"
+        type: "uint16"
+      - name: "RouterID"
+        type: "ID"
+      - name: "AreaID"
+        type: "ID"
+      - name: "Checksum"
+        type: "uint16"
+      - name: "InstanceID"
+        type: "ID"
+      - name: "Reserved"
+        type: "uint8"
+      - name: "Body"
+        type: "Serializable"
+
+  - name: "Hello"
+    fields:
+      - name: "InterfaceID"
+        type: "ID"
+      - name: "RouterPriority"
+        type: "uint8"
+      - name: "Options"
+        type: "RouterOptions"
+      - name: "HelloInterval"
+        type: "uint16"
+      - name: "RouterDeadInterval"
+        type: "uint16"
+      - name: "DesignatedRouterID"
+        type: "ID"
+      - name: "BackupDesignatedRouterID"
+        type: "ID"
+      - name: "NeighborID"
+        type: "ID"
+
+  - name: "DatabaseDescription"
+    fields:
+      - name: "Reserved0"
+        type: "uint8"
+      - name: "Options"
+        type: "RouterOptions"
+      - name: "InterfaceMTU"
+        type: "uint16"
+      - name: "Reserved1"
+        type: "uint8"
+      - name: "DBFlags"
+        type: "uint8"
+      - name: "DDSequenceNumber"
+        type: "uint32"
+      - name: "LSAHeaders"
+        type: "LSAHeader"
+        multiple: true
+
+  - name: "LinkStateRequest"
+    fields:
+      - name: "Reserved0"
+        type: "uint16"
+      - name: "LSType"
+        type: "uint16"
+      - name: "LinkStateID"
+        type: "ID"
+      - name: "AdvertisingRouter"
+        type: "ID"
+
+  - name: "LinkStateUpdate"
+    fields:
+      - name: "LSAs"
+        type: "LSA"
+        multiple: true
+
+  - name: "LinkStateAcknowledgement"
+    fields:
+      - name: "LSAHeaders"
+        type: "LSAHeader"
+        multiple: true
