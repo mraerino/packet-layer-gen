@@ -97,7 +97,7 @@ func (pf *PacketField) generateStructSerialize(b *bytes.Buffer) {
 	switch pf.Type {
 	case "uint8":
 		fmt.Fprintf(b, "\tbuf.WriteByte(x.%s)\n", pf.Name)
-	case "uint16:":
+	case "uint16":
 		fmt.Fprintf(b, "\tbuf.Write(convert.Uint16Byte(x.%s))\n", pf.Name)
 	case "uint32":
 		fmt.Fprintf(b, "\tbuf.Write(convert.Uint32Byte(x.%s))\n", pf.Name)
@@ -176,7 +176,7 @@ func multiple(f *PacketField, b *bytes.Buffer) {
 	fmt.Fprintf(b, "\t	if err != nil {\n")
 	fmt.Fprintf(b, "\t		return nil, 0, errors.Wrap(err, \"Unable to decode\")\n")
 	fmt.Fprintf(b, "\t	}\n")
-	fmt.Fprintf(b, "\t	pdu.%s := append(pdu.%s, tlv)\n", f.Name, f.Name)
+	fmt.Fprintf(b, "\t	pdu.%s = append(pdu.%s, tlv)\n", f.Name, f.Name)
 	fmt.Fprintf(b, "\t	i += n\n")
 	fmt.Fprintf(b, "\t	readBytes += n\n")
 	fmt.Fprintf(b, "\t}\n\n")
@@ -193,7 +193,7 @@ func blockOfNonMultiple(fields []*PacketField, b *bytes.Buffer) {
 	fmt.Fprintf(b, "\t}\n\n")
 	fmt.Fprintf(b, "\terr = decode.Decode(buf, fields)\n")
 	fmt.Fprintf(b, "\tif err != nil {\n")
-	fmt.Fprint(b, "\t\treturn nil, fmt.Errorf(\"Unable to decode fields: %v\", err)\n")
+	fmt.Fprint(b, "\t\treturn nil, readBytes, fmt.Errorf(\"Unable to decode fields: %v\", err)\n")
 	fmt.Fprintf(b, "\t}\n")
 	fmt.Fprintf(b, "\treadBytes += %d\n\n", n)
 }
